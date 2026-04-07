@@ -301,7 +301,9 @@
     Continuar →
   </button>
 
-  <button class="btn btn-ghost" onclick="showDebugModal()">⚙ Configurar Google Sheets</button>
+  <button class="btn btn-ghost" onclick="configureScriptUrl()" style="position:relative; z-index:50;">
+  ⚙ Configurar Google Sheets
+</button>
 </div>
 
 <!-- ═══════════════════════════════ PRODUCTS SCREEN ═══════════════════════════════ -->
@@ -428,14 +430,20 @@ function saveConfig() {
   closeConfig();
   showToast('URL guardada ✓', true);
 }
-function showDebugModal() {
-  const m = document.getElementById('configModal');
-  m.style.display = 'flex';
-  document.getElementById('scriptUrl').value = getScriptUrl();
+function configureScriptUrl() {
+  const current = getScriptUrl();
+  const url = prompt('Pegá la URL de tu Apps Script (/exec):', current || '');
+  if (url === null) return;
+  const cleanUrl = url.trim();
+  if (!cleanUrl) {
+    showToast('Ingresá una URL válida');
+    return;
+  }
+  localStorage.setItem('scriptUrl', cleanUrl);
+  showToast('URL guardada ✓', true);
 }
-function closeConfig() {
-  document.getElementById('configModal').style.display = 'none';
-}
+
+function closeConfig() {}
 
 // ═══════════════════ NFC ═══════════════════
 async function startNFC() {
