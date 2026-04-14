@@ -262,6 +262,24 @@ function openProducts(cardId) {
       showToast('No se pudo verificar historial. Continuando...');
     });
 }
+
+function showLoading(show, text = 'Guardando en Google Sheets...') {
+  document.getElementById('loadingText').textContent = text;
+  document.getElementById('loadingOverlay').classList.toggle('show', show);
+}
+
+function showToast(msg, success = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (success ? ' success' : '') + ' show';
+  setTimeout(() => t.className = 'toast' + (success ? ' success' : ''), 3000);
+}
+
+// Función para mostrar las pantallas
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
 </script>
 
 </body>
