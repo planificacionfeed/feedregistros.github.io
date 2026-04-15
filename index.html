@@ -1,170 +1,274 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#0f1117">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>Feed Scanner</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #0a0b0f;
-      --surface: #13151c;
-      --surface2: #1c1f2a;
-      --border: #2a2d3a;
-      --accent: #4ade80;
-      --accent2: #22d3ee;
-      --accent-dim: rgba(74,222,128,0.12);
-      --text: #f0f2f5;
-      --muted: #6b7280;
-      --danger: #f87171;
-      --warn: #fbbf24;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-    html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0f1117">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Feed Scanner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0b0f;
+    --surface: #13151c;
+    --surface2: #1c1f2a;
+    --border: #2a2d3a;
+    --accent: #4ade80;
+    --accent2: #22d3ee;
+    --accent-dim: rgba(74,222,128,0.12);
+    --text: #f0f2f5;
+    --muted: #6b7280;
+    --danger: #f87171;
+    --warn: #fbbf24;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; }
 
-    /* ── SCREENS ── */
-    .screen { position: fixed; inset: 0; display: flex; flex-direction: column; opacity: 0; pointer-events: none; transition: opacity .25s; }
-    .screen.active { opacity: 1; pointer-events: all; }
+  /* ── SCREENS ── */
+  .screen { position: fixed; inset: 0; display: flex; flex-direction: column; opacity: 0; pointer-events: none; transition: opacity .25s; }
+  .screen.active { opacity: 1; pointer-events: all; }
 
-    /* ── SCAN SCREEN ── */
-    #scanScreen {
-      align-items: center; justify-content: center; gap: 32px;
-      background: radial-gradient(ellipse at 50% 30%, #1a2035 0%, var(--bg) 70%);
-      padding: 32px 24px;
-    }
-    .logo { text-align: center; }
-    .logo h1 { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; letter-spacing: -0.5px; }
-    .logo h1 span { color: var(--accent); }
-    .logo p { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+  /* ── SCAN SCREEN ── */
+  #scanScreen {
+    align-items: center; justify-content: center; gap: 32px;
+    background: radial-gradient(ellipse at 50% 30%, #1a2035 0%, var(--bg) 70%);
+    padding: 32px 24px;
+  }
+  .logo { text-align: center; }
+  .logo h1 { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; letter-spacing: -0.5px; }
+  .logo h1 span { color: var(--accent); }
+  .logo p { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
 
-    .scan-card {
-      width: 100%; max-width: 340px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 28px 24px;
-      text-align: center;
-    }
-    .scan-icon {
-      width: 72px; height: 72px; margin: 0 auto 16px;
-      border-radius: 50%; background: var(--accent-dim);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 2rem;
-      animation: pulse 2.5s infinite;
-    }
-    @keyframes pulse {
-      0%,100% { box-shadow: 0 0 0 0 rgba(74,222,128,.3); }
-      50% { box-shadow: 0 0 0 14px rgba(74,222,128,0); }
-    }
-    .scan-card h2 { font-family: 'Syne', sans-serif; font-size: 1.15rem; font-weight: 700; margin-bottom: 8px; }
-    .scan-card p { color: var(--muted); font-size: 0.82rem; line-height: 1.5; }
+  .scan-card {
+    width: 100%; max-width: 340px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px 24px;
+    text-align: center;
+  }
+  .scan-icon {
+    width: 72px; height: 72px; margin: 0 auto 16px;
+    border-radius: 50%; background: var(--accent-dim);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem;
+    animation: pulse 2.5s infinite;
+  }
+  @keyframes pulse {
+    0%,100% { box-shadow: 0 0 0 0 rgba(74,222,128,.3); }
+    50% { box-shadow: 0 0 0 14px rgba(74,222,128,0); }
+  }
+  .scan-card h2 { font-family: 'Syne', sans-serif; font-size: 1.15rem; font-weight: 700; margin-bottom: 8px; }
+  .scan-card p { color: var(--muted); font-size: 0.82rem; line-height: 1.5; }
 
-    .divider { display: flex; align-items: center; gap: 12px; width: 100%; max-width: 340px; }
-    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-    .divider span { color: var(--muted); font-size: 0.75rem; }
+  .divider { display: flex; align-items: center; gap: 12px; width: 100%; max-width: 340px; }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .divider span { color: var(--muted); font-size: 0.75rem; }
 
-    .input-row { width: 100%; max-width: 340px; display: flex; gap: 8px; }
-    .input-row input {
-      flex: 1; background: var(--surface); border: 1px solid var(--border);
-      border-radius: 12px; padding: 12px 14px; color: var(--text);
-      font-size: 0.9rem; outline: none; transition: border-color .2s;
-    }
-    .input-row input:focus { border-color: var(--accent); }
-    .input-row input::placeholder { color: var(--muted); }
+  .input-row { width: 100%; max-width: 340px; display: flex; gap: 8px; }
+  .input-row input {
+    flex: 1; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 12px 14px; color: var(--text);
+    font-size: 0.9rem; outline: none; transition: border-color .2s;
+  }
+  .input-row input:focus { border-color: var(--accent); }
+  .input-row input::placeholder { color: var(--muted); }
 
-    /* ── BUTTONS ── */
-    .btn {
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      border: none; border-radius: 12px; padding: 14px 20px;
-      font-family: 'Syne', sans-serif; font-size: 0.9rem; font-weight: 700;
-      cursor: pointer; transition: all .15s; letter-spacing: 0.3px;
-    }
-    .btn-primary { background: var(--accent); color: #0a0b0f; width: 100%; max-width: 340px; }
-    .btn-primary:active { transform: scale(.97); background: #22c55e; }
-    .btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
-    .btn-secondary:active { transform: scale(.97); }
-    .btn-ghost { background: transparent; color: var(--muted); font-size: 0.8rem; padding: 8px 12px; }
-    .btn-danger { background: rgba(248,113,113,.15); color: var(--danger); border: 1px solid rgba(248,113,113,.2); }
-    .btn-sm { padding: 8px 14px; font-size: 0.8rem; border-radius: 8px; }
-    .btn-icon { width: 40px; height: 40px; padding: 0; border-radius: 10px; }
+  /* ── BUTTONS ── */
+  .btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    border: none; border-radius: 12px; padding: 14px 20px;
+    font-family: 'Syne', sans-serif; font-size: 0.9rem; font-weight: 700;
+    cursor: pointer; transition: all .15s; letter-spacing: 0.3px;
+  }
+  .btn-primary { background: var(--accent); color: #0a0b0f; width: 100%; max-width: 340px; }
+  .btn-primary:active { transform: scale(.97); background: #22c55e; }
+  .btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+  .btn-secondary:active { transform: scale(.97); }
+  .btn-ghost { background: transparent; color: var(--muted); font-size: 0.8rem; padding: 8px 12px; }
+  .btn-danger { background: rgba(248,113,113,.15); color: var(--danger); border: 1px solid rgba(248,113,113,.2); }
+  .btn-sm { padding: 8px 14px; font-size: 0.8rem; border-radius: 8px; }
+  .btn-icon { width: 40px; height: 40px; padding: 0; border-radius: 10px; }
 
-    /* ── PRODUCTS SCREEN ── */
-    #productsScreen { background: var(--bg); }
-    .topbar {
-      display: flex; align-items: center; gap: 12px;
-      padding: 16px 20px 12px; border-bottom: 1px solid var(--border);
-      background: var(--surface); flex-shrink: 0;
-    }
-    .topbar-back { font-size: 1.2rem; cursor: pointer; color: var(--muted); padding: 4px; }
-    .topbar-info { flex: 1; min-width: 0; }
-    .topbar-info .card-id { font-family: 'Syne', sans-serif; font-size: 0.75rem; color: var(--accent); font-weight: 600; }
-    .topbar-info h3 { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .cart-badge {
-      position: relative; background: var(--accent); color: #0a0b0f;
-      border-radius: 10px; padding: 6px 12px; font-family: 'Syne', sans-serif;
-      font-size: 0.8rem; font-weight: 800; cursor: pointer; white-space: nowrap;
-      display: flex; align-items: center; gap: 6px;
-    }
-    .cart-count {
-      background: #0a0b0f; color: var(--accent); border-radius: 50%;
-      width: 18px; height: 18px; font-size: 0.7rem;
-      display: flex; align-items: center; justify-content: center;
-    }
+  /* ── RFID STATUS ── */
+  .rfid-status {
+    width: 100%; max-width: 340px; display: flex; align-items: center; gap: 8px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 10px 14px; font-size: 0.78rem; color: var(--muted);
+  }
+  .rfid-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; background: var(--warn); box-shadow: 0 0 6px var(--warn); animation: blink 1.2s infinite; }
+  .rfid-dot.read { background: var(--accent); box-shadow: 0 0 6px var(--accent); animation: none; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
 
-    /* ── VERSION ── */
-    .version {
-      position: fixed;
-      bottom: 16px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.75rem;
-      color: var(--muted);
-    }
+  /* ── PRODUCTS SCREEN ── */
+  #productsScreen { background: var(--bg); }
+  .topbar {
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 20px 12px; border-bottom: 1px solid var(--border);
+    background: var(--surface); flex-shrink: 0;
+  }
+  .topbar-back { font-size: 1.2rem; cursor: pointer; color: var(--muted); padding: 4px; }
+  .topbar-info { flex: 1; min-width: 0; }
+  .topbar-info .card-id { font-family: 'Syne', sans-serif; font-size: 0.75rem; color: var(--accent); font-weight: 600; }
+  .topbar-info h3 { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cart-badge {
+    position: relative; background: var(--accent); color: #0a0b0f;
+    border-radius: 10px; padding: 6px 12px; font-family: 'Syne', sans-serif;
+    font-size: 0.8rem; font-weight: 800; cursor: pointer; white-space: nowrap;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .cart-count {
+    background: #0a0b0f; color: var(--accent); border-radius: 50%;
+    width: 18px; height: 18px; font-size: 0.7rem;
+    display: flex; align-items: center; justify-content: center;
+  }
 
-    /* ── LOADING OVERLAY ── */
-    .loading-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      visibility: hidden;
-      opacity: 0;
-      transition: opacity 0.3s, visibility 0s 0.3s;
-      z-index: 999;
-    }
+  .search-bar { padding: 12px 20px; flex-shrink: 0; }
+  .search-bar input {
+    width: 100%; background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 12px; padding: 11px 16px 11px 40px; color: var(--text);
+    font-size: 0.9rem; outline: none; transition: border-color .2s;
+  }
+  .search-bar input:focus { border-color: var(--accent); }
+  .search-wrap { position: relative; }
+  .search-icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 0.9rem; pointer-events: none; }
 
-    .loading-overlay.show {
-      visibility: visible;
-      opacity: 1;
-      transition: opacity 0.3s;
-    }
+  .products-list { flex: 1; overflow-y: auto; padding: 8px 16px 120px; }
+  .product-item {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 12px 14px; margin-bottom: 8px;
+    cursor: pointer; transition: all .15s; position: relative;
+  }
+  .product-item:active { transform: scale(.98); }
+  .product-item.selected { border-color: var(--accent); background: var(--accent-dim); }
+  .product-item.in-cart { border-color: rgba(74,222,128,.4); }
+  .product-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: var(--surface2); display: flex; align-items: center;
+    justify-content: center; font-size: 1.1rem; flex-shrink: 0;
+  }
+  .product-info { flex: 1; min-width: 0; }
+  .product-info .pid { font-size: 0.68rem; color: var(--muted); font-family: 'Syne', sans-serif; }
+  .product-info .pname { font-size: 0.87rem; font-weight: 500; line-height: 1.3; }
+  .product-qty {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--surface2); border-radius: 8px; padding: 4px;
+    flex-shrink: 0;
+  }
+  .qty-btn {
+    width: 28px; height: 28px; border-radius: 6px; border: none;
+    background: var(--border); color: var(--text); font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: background .15s; font-weight: bold;
+  }
+  .qty-btn:active { background: var(--accent); color: #0a0b0f; }
+  .qty-val { min-width: 24px; text-align: center; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.9rem; }
+  .check-mark {
+    position: absolute; top: 8px; right: 8px;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--accent); color: #0a0b0f;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.6rem; font-weight: bold; opacity: 0; transition: opacity .2s;
+  }
+  .product-item.in-cart .check-mark { opacity: 1; }
 
-    .loading-box {
-      background: var(--surface);
-      padding: 24px 36px;
-      border-radius: 12px;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
+  /* ── FLOATING CONFIRM ── */
+  .float-confirm {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    padding: 16px 20px 28px;
+    background: linear-gradient(transparent, var(--bg) 30%);
+    pointer-events: none;
+  }
+  .float-confirm .btn { pointer-events: all; box-shadow: 0 4px 24px rgba(74,222,128,.25); }
 
-    .loading-text {
-      font-size: 1rem;
-      color: var(--muted);
-    }
-  </style>
+  /* ── CART SCREEN ── */
+  #cartScreen { background: var(--bg); }
+  .cart-list { flex: 1; overflow-y: auto; padding: 16px 16px 120px; }
+  .cart-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 14px; margin-bottom: 8px;
+  }
+  .cart-item-info { flex: 1; min-width: 0; }
+  .cart-item-info .cid { font-size: 0.68rem; color: var(--muted); }
+  .cart-item-info .cname { font-size: 0.9rem; font-weight: 500; margin-top: 2px; line-height: 1.3; }
+  .cart-item-qty {
+    display: flex; align-items: center; gap: 8px; margin-top: 8px;
+    background: var(--surface2); border-radius: 8px; padding: 4px; width: fit-content;
+  }
+  .cart-remove { color: var(--danger); font-size: 1.1rem; cursor: pointer; padding: 4px; flex-shrink: 0; }
+  .empty-cart { text-align: center; padding: 60px 20px; color: var(--muted); }
+  .empty-cart .emoji { font-size: 3rem; margin-bottom: 12px; }
+
+  /* ── SUCCESS SCREEN ── */
+  #successScreen {
+    align-items: center; justify-content: center; gap: 24px;
+    padding: 32px 24px;
+    background: radial-gradient(ellipse at 50% 40%, rgba(74,222,128,.08) 0%, var(--bg) 70%);
+  }
+  .success-icon {
+    width: 88px; height: 88px; border-radius: 50%;
+    background: var(--accent-dim); border: 2px solid var(--accent);
+    display: flex; align-items: center; justify-content: center; font-size: 2.5rem;
+  }
+  .success-title { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; text-align: center; }
+  .success-sub { color: var(--muted); text-align: center; font-size: 0.85rem; line-height: 1.6; max-width: 280px; }
+  .success-items {
+    width: 100%; max-width: 360px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; overflow: hidden;
+  }
+  .success-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 16px; border-bottom: 1px solid var(--border); font-size: 0.82rem;
+  }
+  .success-item:last-child { border-bottom: none; }
+  .success-item .sname { color: var(--muted); flex: 1; margin-right: 8px; }
+  .success-item .sqty { font-family: 'Syne', sans-serif; font-weight: 700; color: var(--accent); }
+
+  /* ── ERROR TOAST ── */
+  .toast {
+    position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-80px);
+    background: var(--danger); color: #fff; padding: 10px 20px;
+    border-radius: 10px; font-size: 0.85rem; font-weight: 500;
+    transition: transform .3s; z-index: 999; white-space: nowrap; max-width: 90vw;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.success { background: var(--accent); color: #0a0b0f; }
+
+  /* ── LOADING ── */
+  .spinner {
+    width: 20px; height: 20px; border: 2px solid rgba(10,11,15,.3);
+    border-top-color: #0a0b0f; border-radius: 50%; animation: spin .6s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-overlay {
+    position: fixed; inset: 0; background: rgba(10,11,15,.7);
+    display: flex; align-items: center; justify-content: center;
+    backdrop-filter: blur(4px); z-index: 100; opacity: 0; pointer-events: none; transition: opacity .2s;
+  }
+  .loading-overlay.show { opacity: 1; pointer-events: all; }
+  .loading-box {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; padding: 28px 36px; text-align: center; gap: 16px;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .loading-box .spinner { width: 32px; height: 32px; border-color: var(--accent-dim); border-top-color: var(--accent); }
+  .loading-box p { font-size: 0.85rem; color: var(--muted); margin-top: 8px; }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+</style>
 </head>
 <body>
 
-<!-- SCAN SCREEN -->
+<!-- ═══════════════════════════════ SCAN SCREEN ═══════════════════════════════ -->
 <div id="scanScreen" class="screen active">
   <div class="logo">
     <h1>Feed<span>Scanner</span></h1>
@@ -172,23 +276,26 @@
   </div>
 
   <div class="scan-card">
-    <div class="scan-icon">📡</div>
-    <h2>Escanear tarjeta RFID</h2>
-    <p>Acercá la tarjeta al lector RFID para leer su ID automáticamente</p>
+    <div class="scan-icon">💳</div>
+    <h2>Acercá la tarjeta al lector</h2>
+    <p>Posicioná la tarjeta RFID sobre el lector USB. El ID se cargará automáticamente.</p>
   </div>
 
-  <div class="divider"><span>o ingresá el código manualmente</span></div>
-
-  <div class="input-row">
-    <input type="text" id="manualId" placeholder="Código de tarjeta" autocomplete="off">
+  <div class="rfid-status">
+    <div class="rfid-dot" id="rfidDot"></div>
+    <span id="rfidStatusText">Esperando tarjeta...</span>
   </div>
 
+  <div class="input-row" style="width:100%;max-width:340px">
+    <input type="text" id="manualId" placeholder="ID de tarjeta (lector o manual)" autocomplete="off" style="flex:1">
+  </div>
   <button class="btn btn-primary" onclick="enterManual()">
     Continuar →
   </button>
+
 </div>
 
-<!-- PRODUCTS SCREEN -->
+<!-- ═══════════════════════════════ PRODUCTS SCREEN ═══════════════════════════════ -->
 <div id="productsScreen" class="screen">
   <div class="topbar">
     <span class="topbar-back" onclick="goBack()">←</span>
@@ -217,7 +324,7 @@
   </div>
 </div>
 
-<!-- CART SCREEN -->
+<!-- ═══════════════════════════════ CART SCREEN ═══════════════════════════════ -->
 <div id="cartScreen" class="screen">
   <div class="topbar">
     <span class="topbar-back" onclick="goToProducts()">←</span>
@@ -236,7 +343,7 @@
   </div>
 </div>
 
-<!-- SUCCESS SCREEN -->
+<!-- ═══════════════════════════════ SUCCESS SCREEN ═══════════════════════════════ -->
 <div id="successScreen" class="screen">
   <div class="success-icon">✓</div>
   <div class="success-title">¡Registrado!</div>
@@ -247,70 +354,370 @@
   </button>
 </div>
 
-<!-- BLOCKED SCREEN -->
-<div id="blockedScreen" class="screen">
+<!-- ═══════════════════════════════ BLOCKED SCREEN ═══════════════════════════════ -->
+<div id="blockedScreen" class="screen" style="align-items:center;justify-content:center;gap:24px;padding:32px 24px;background:radial-gradient(ellipse at 50% 40%, rgba(248,113,113,.07) 0%, var(--bg) 70%)">
+  <div style="width:88px;height:88px;border-radius:50%;background:rgba(248,113,113,.12);border:2px solid var(--danger);display:flex;align-items:center;justify-content:center;font-size:2.5rem">🚫</div>
   <div style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;text-align:center;color:var(--danger)">Compra no permitida</div>
   <div style="color:var(--muted);text-align:center;font-size:0.85rem;line-height:1.6;max-width:300px">
     Esta tarjeta ya registró una compra el día de hoy.<br>Solo se permite una transacción por tarjeta por día.
   </div>
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;width:100%;max-width:360px;overflow:hidden">
+    <div style="padding:12px 16px;border-bottom:1px solid var(--border);font-family:'Syne',sans-serif;font-size:0.8rem;font-weight:700;color:var(--muted)">
+      TARJETA: <span id="blockedCardId" style="color:var(--text)"></span>
+    </div>
+    <div style="padding:6px 0;font-size:0.82rem">
+      <div style="padding:8px 16px;color:var(--muted);font-size:0.75rem;font-weight:600;font-family:'Syne',sans-serif">COMPRAS DE HOY</div>
+      <div id="blockedPurchaseList"></div>
+    </div>
+  </div>
   <button class="btn btn-secondary" style="width:100%;max-width:360px" onclick="resetAll()">← Escanear otra tarjeta</button>
 </div>
 
-<!-- VERSION FOOTER -->
-<div class="version">
-  Versión: v1
-</div>
 
-<!-- LOADING OVERLAY -->
-<div id="loadingOverlay" class="loading-overlay">
+
+<!-- ═══════════════════════════════ LOADING ═══════════════════════════════ -->
+<div class="loading-overlay" id="loadingOverlay">
   <div class="loading-box">
     <div class="spinner"></div>
-    <p class="loading-text" id="loadingText">Cargando...</p>
+    <p id="loadingText">Guardando en Google Sheets...</p>
   </div>
 </div>
 
+<div class="toast" id="toast"></div>
+
 <script>
-// Función para ingresar manualmente el código de la tarjeta
+// ═══════════════════ DATA ═══════════════════
+const PRODUCTS = [{"id":"PFWP00006","name":"Wrap mexicano"},{"id":"PFWP00005","name":"Wrap caprese con pollo"},{"id":"PFWP00004","name":"Wrap Veggie"},{"id":"PFWP00003","name":"Wrap Italiano"},{"id":"PFWP00002","name":"Wrap BBQ"},{"id":"PFWP00001","name":"Wrap Criollo"},{"id":"PFTA00004","name":"Tarta de humita"},{"id":"PFTA00003","name":"Tarta de espinaca"},{"id":"PFTA00002","name":"Tarta de cebolla y queso"},{"id":"PFTA00001","name":"Tarta de Jamon y queso"},{"id":"PFCO00010","name":"Combo Sandwich Pollo crunchi"},{"id":"PFSW00003","name":"Sandwich de jamon y queso grande"},{"id":"PFSW00002","name":"Sandwich McFeed"},{"id":"PFSW00001","name":"Sandwich de salame y queso"},{"id":"PFSS00008","name":"Scons con panceta"},{"id":"PFSS00007","name":"Salma galleta con queso"},{"id":"PFSS00006","name":"Croissant de jamon y queso proveedor con packaging"},{"id":"PFSS00005","name":"Galleta de arroz con doble queso"},{"id":"PFSS00004","name":"Dados de queso y frutos secos"},{"id":"PFSS00003","name":"Pan negro con queso y mermelada"},{"id":"PFSS00002","name":"Pan blanco con doble queso"},{"id":"PFSS00001","name":"Scon de queso"},{"id":"PFSD00018","name":"Pan dulce"},{"id":"PFSD00017","name":"Cookie octubre rosa"},{"id":"PFSD00014","name":"Alfajor de nuez"},{"id":"PFSD00013","name":"American cookie"},{"id":"PFSD00012","name":"Pan blanco con manteca y ddl"},{"id":"PFSD00011","name":"Budin de limon proveedor con packaging"},{"id":"PFSD00010","name":"Budin Marmolado proveedor con packaging"},{"id":"PFSD00009","name":"Cuadrado coco con dulce de leche proveedor con packaging"},{"id":"PFSD00008","name":"Alfajor de nueces con chocolate proveedor con packaging"},{"id":"PFSD00007","name":"Alfajor de manteca proveedor con packaging"},{"id":"PFSD00006","name":"Alfajor de maicena proveedor con packaging x2"},{"id":"PFSD00005","name":"Donut con packaging"},{"id":"PFSD00004","name":"Ventanita de Frambuesa proveedor con packaging"},{"id":"PFSD00003","name":"Brownie"},{"id":"PFSD00002","name":"Pastafrola proveedor con packaging"},{"id":"PFSD00001","name":"Alfajor de chocolate proveedor con packaging"},{"id":"PFPW00166","name":"Pure de papa"},{"id":"PFPW00165","name":"Suprema de pollo con fritatta de zucchini warmer"},{"id":"PFPW00163","name":"Combo Tarta de hongos y queso"},{"id":"PFPW00159","name":"Blue chicken bowl"},{"id":"PFPW00158","name":"Tortilla de papa"},{"id":"PFPW00157","name":"Pure mixto"},{"id":"PFPW00156","name":"Sandwich suprema de pollo con jamon y queso"},{"id":"PFPW00155","name":"Sandwich de suprema con jamón y queso con guarnicion"},{"id":"PFPW00154","name":"Ensalada mixta warmer"},{"id":"PFPW00153","name":"Entraña"},{"id":"PFPW00152","name":"Ensalada rúcula y parmesano"},{"id":"PFPW00151","name":"Morcilla warmer"},{"id":"PFPW00150","name":"Bife de chorizo warmer"},{"id":"PFPW00149","name":"Pollo Warmer"},{"id":"PFPW00148","name":"Papas Feed make your own"},{"id":"PFPW00146","name":"Pollo a la suiza con papas dore Warmer"},{"id":"PFPW00145","name":"Ñoquis de boniato con salsa de tomate Warmer"},{"id":"PFPW00144","name":"Chicken pesto bowl warmer"},{"id":"PFPW00143","name":"Asado banderita warmer"},{"id":"PFPW00142","name":"Mini provoleta warmer"},{"id":"PFPW00141","name":"Papas y vegetales asados"},{"id":"PFPW00140","name":"Ensalada papa y huevo"},{"id":"PFPW00139","name":"Medallón de quinoa"},{"id":"PFPW00138","name":"Chorizo Bombon Warmer"},{"id":"PFPW00137","name":"Picaña Warmer"},{"id":"PFPW00136","name":"Lomo Warmer"},{"id":"PFPW00135","name":"Hamburguesa doble con queso con guarnicion Warmer"},{"id":"PFPW00134","name":"Involtini de berenjenas"},{"id":"PFPW00133","name":"Spring Veggie Bowl"},{"id":"PFPW00131","name":"Harvest bowl"},{"id":"PFPW00130","name":"Brocoli y repollo make your own"},{"id":"PFPW00129","name":"Pull pork sandwich"},{"id":"PFPW00128","name":"Suprema a la fugazzeta con arroz Warmer"},{"id":"PFPW00127","name":"Calabaza, zanahoria y boniato Make your own"},{"id":"PFPW00126","name":"Milanesa de ternera con papas Warmer"},{"id":"PFPW00125","name":"Carne al horno con vegetales Warmer"},{"id":"PFPW00123","name":"Chivito uruguayo"},{"id":"PFPW00122","name":"Pechuga caprese con calabaza, zanahoria y boniato Warmer"},{"id":"PFPW00121","name":"Milanesa con fideos"},{"id":"PFPW00120","name":"Pull pork sandwich con papas Warmer"},{"id":"PFPW00119","name":"Lactonesa de zanahoria make your own"},{"id":"PFPW00118","name":"Lasagna de espinaca warmer"},{"id":"PFPW00117","name":"Sorrentinos de calabaza con crema de citricos y salvia Warmer"},{"id":"PFPW00116","name":"Pollo a la portuguesa con papas warmer"},{"id":"PFPW00115","name":"Brocoli y coliflor make your own"},{"id":"PFPW00114","name":"Coleslaw make your own"},{"id":"PFPW00113","name":"Pizza portobello proveedor Warmer"},{"id":"PFPW00112","name":"Pizza fugaceta proveedor Warmer"},{"id":"PFPW00110","name":"Tabule make your own"},{"id":"PFPW00109","name":"Ensalada de pasta integral make your own"},{"id":"PFPW00108","name":"Fritatta de zucchini make your own"},{"id":"PFPW00107","name":"Ketchup casero make your own"},{"id":"PFPW00106","name":"Bondiola con pure de calabaza y zanahoria Warmer"},{"id":"PFPW00105","name":"Carne stroganoff Warmer"},{"id":"PFPW00104","name":"Solomillo make your own"},{"id":"PFPW00103","name":"Carne de ternera make your own"},{"id":"PFPW00102","name":"Salsa de mani make your own"},{"id":"PFPW00101","name":"Vegetales asados make your own"},{"id":"PFPW00100","name":"Papas Feed con salsa brava make your own"},{"id":"PFPW00099","name":"Mix de verdes, zanahoria rallada y cherry make your own"},{"id":"PFPW00098","name":"Pechuga marinada make your own"},{"id":"PFPW00097","name":"Guarnicion de papas warmer"},{"id":"PFPW00096","name":"Pull pork sandwich con batatas Warmer"},{"id":"PFPW00095","name":"Pollo relleno con Fiorentina, salsa Filetto y papas dore Warmer"},{"id":"PFPW00094","name":"Risotto de cebada con hongos Warmer"},{"id":"PFPW00093","name":"Choripan parrillada Warmer"},{"id":"PFPW00092","name":"Suprema con pure mixto Warmer"},{"id":"PFPW00091","name":"Wrap pollo a la crema Grandwich con guarnicion Warmer"},{"id":"PFPW00090","name":"Wrap veggie Grandwich con guarnicion Warmer"},{"id":"PFPW00089","name":"Wrap de peceto Grandwich con guarnicion Warmer"},{"id":"PFPW00088","name":"Wrap mexicano con guarnicion Warmer"},{"id":"PFPW00087","name":"Wrap caprese con pollo con guarnicion Warmer"},{"id":"PFPW00086","name":"Wrap italiano con guarnicion Warmer"},{"id":"PFPW00085","name":"Wrap veggie con guarnicion Warmer"},{"id":"PFPW00084","name":"Wrap criollo con guarnicion Warmer"},{"id":"PFPW00083","name":"Wrap de pollo bbq con guarnicion Warmer"},{"id":"PFPW00082","name":"Tarta de verdura proveedor con guarnicion Warmer"},{"id":"PFPW00081","name":"Tarta de pollo proveedor con guarnicion Warmer"},{"id":"PFPW00080","name":"Tarta de jamon y queso proveedor con guarnicion Warmer"},{"id":"PFPW00079","name":"Tarta de calabaza y verdura proveedor con guarnicion Warmer"},{"id":"PFPW00078","name":"Tarta de jamon y queso con guarncicion Warmer"},{"id":"PFPW00077","name":"Tarta de humita con guarnicion Warmer"},{"id":"PFPW00076","name":"Tarta de espinaca con guarnicion Warmer"},{"id":"PFPW00075","name":"Tarta de cebolla y queso con guarnicion Warmer"},{"id":"PFPW00074","name":"Buñuelos de arroz Warmer"},{"id":"PFPW00073","name":"Side salad coleslaw Warmer"},{"id":"PFPW00072","name":"Buñuelos de espinaca Warmer"},{"id":"PFPW00071","name":"Sandwich de pollo honey con guarnicion Warmer"},{"id":"PFPW00070","name":"Sandwich de pollo crunchi con papas Warmer"},{"id":"PFPW00069","name":"Chivito uruguayo con papas Warmer"},{"id":"PFPW00068","name":"ñoquis de papa con salasa de tomate Warmer"},{"id":"PFPW00067","name":"Polenta grillada con tomates asados y brocoli Warmer"},{"id":"PFPW00066","name":"Pastel vegetariano de lentejas y calabaza Warmer"},{"id":"PFPW00065","name":"Risotto de cebada caprese Warmer"},{"id":"PFPW00064","name":"Medallon veggie con pure Mixto Warmer"},{"id":"PFPW00063","name":"Macarroni con salsa rosa Warmer"},{"id":"PFPW00062","name":"Lasagna de calabaza Warmer"},{"id":"PFPW00061","name":"Nuggets de zanahoria con pure mixto Warmer"},{"id":"PFPW00060","name":"Berenjena parmesana con side salad Warmer"},{"id":"PFPW00059","name":"Croquetas de quinoa con vegetales Warmer"},{"id":"PFPW00058","name":"Bowl Arroz Yamani, Zapallito, hamb. Quinoa Warmer"},{"id":"PFPW00057","name":"Malfatis con salsa de tomate Warmer"},{"id":"PFPW00056","name":"Macarroni con salsa mediterranea Warmer"},{"id":"PFPW00055","name":"Macarroni & Cheese Warmer"},{"id":"PFPW00054","name":"Macarroni con salsa de hongos Warmer"},{"id":"PFPW00053","name":"Involtini de zucchini Warmer"},{"id":"PFPW00052","name":"Falafel de arvejas con humus, ensalada israeli y papas dore Warmer"},{"id":"PFPW00051","name":"Lasagna vegetariana Warmer"},{"id":"PFPW00050","name":"Canelones de verdura con salsa de tomate Warmer"},{"id":"PFPW00049","name":"Souffle de zanahorias con brocoli gratinado Warmer"},{"id":"PFPW00048","name":"Ravioles con salsa rosa Warmer"},{"id":"PFPW00047","name":"Guiso de lentejas Warmer"},{"id":"PFPW00046","name":"Malfatis con crema Warmer"},{"id":"PFPW00045","name":"ravioles con salsa fileto Warmer"},{"id":"PFPW00044","name":"Suprema napolitana con pure de calabaza Warmer"},{"id":"PFPW00043","name":"Bondiola thai con dados de calabazas de otoño Warmer"},{"id":"PFPW00042","name":"Pollo masala Warmer"},{"id":"PFPW00041","name":"Sorrentinos de Jamón y queso con salsa Rosa Warmer"},{"id":"PFPW00040","name":"Bondiola con ensalada de quinoa, anco, cebolla asada y pasas de uva Warmer"},{"id":"PFPW00039","name":"Suprema Napolitana con tortilla de papa Warmer"},{"id":"PFPW00038","name":"Milanesa Napolitana con pure Mixto Warmer"},{"id":"PFPW00037","name":"Milanesa napolitana con mac & cheese Warmer"},{"id":"PFPW00036","name":"Chicken fingers con guarnicion Warmer"},{"id":"PFPW00035","name":"Carne al horno con pesto, Boniatos y Tomates Cherrys asados Warmer"},{"id":"PFPW00034","name":"Hamburguesa con queso con guarnicion Warmer"},{"id":"PFPW00033","name":"Bondiola braseada con puré de boniato Warmer"},{"id":"PFPW00032","name":"Pollo alimonado con vegetales Warmer"},{"id":"PFPW00031","name":"Carne al horno con salsa romesco, papas y cebolla Warmer"},{"id":"PFPW00030","name":"Carne al horno con papas a la crema Warmer"},{"id":"PFPW00029","name":"Milanesa napolitana con pure de boniato Warmer"},{"id":"PFPW00028","name":"Macarron con ragu de carne Warmer"},{"id":"PFPW00027","name":"Pollo alimonado y terrina de vegetales Warmer"},{"id":"PFPW00026","name":"Chop suey de ternera Warmer"},{"id":"PFPW00025","name":"Suprema napolitana con pure de papas Warmer"},{"id":"PFPW00024","name":"Chop suey de pollo Warmer"},{"id":"PFPW00023","name":"Suprema con puré de papa Warmer"},{"id":"PFPW00022","name":"Solomillo en mostaza y miel con puré de batata Warmer"},{"id":"PFPW00021","name":"Chicken Pie Warmer"},{"id":"PFPW00020","name":"Pollo crunchi con crema de espinaca y milhojas de papas Warmer"},{"id":"PFPW00019","name":"Pastel de papa Warmer"},{"id":"PFPW00018","name":"Pollo al verdeo con Arroz Warmer"},{"id":"PFPW00017","name":"Milanesa Napolitana con puré de papas Warmer"},{"id":"PFPW00016","name":"Pollo al curry con Arroz Warmer"},{"id":"PFPW00015","name":"Bondiola braseada con puré de batatas Warmer"},{"id":"PFPW00014","name":"Milanesas de peceto con pure de papas Warmer"},{"id":"PFPW00013","name":"Pizza zen papa Warmer"},{"id":"PFPW00012","name":"Pizza zen margarita Warmer"},{"id":"PFPW00011","name":"Pizza zen 24cm"},{"id":"PFPW00010","name":"Bowl de pollo y mix de cereales Warmer"},{"id":"PFPW00009","name":"Bowl de otoño"},{"id":"PFPW00008","name":"Bowl Nuevo oriente"},{"id":"PFPW00007","name":"Meat bowl"},{"id":"PFPW00006","name":"Acqua bowl"},{"id":"PFPW00005","name":"Chicken bowl"},{"id":"PFPW00004","name":"Bowl spicy Warmer"},{"id":"PFPW00003","name":"Bowl veggie Warmer"},{"id":"PFPW00002","name":"Hot Bowl de ternera Warmer"},{"id":"PFPW00001","name":"Hot Bowl de pollo Warmer"},{"id":"PFPV00052","name":"Ñoquis de boniato c/ salsa filetto"},{"id":"PFPV00047","name":"Pollo al verdeo con Arroz"},{"id":"PFPV00046","name":"Carne al horno con vegetales"},{"id":"PFPV00045","name":"Sorrentinos calabaza crema cítrico"},{"id":"PFPV00044","name":"Ravioles con salsa rosa"},{"id":"PFPV00043","name":"Suprema con pure mixto"},{"id":"PFPV00042","name":"Risotto de cebada caprese"},{"id":"PFPV00041","name":"Souffle de zanahorias con brócoli"},{"id":"PFPV00040","name":"Pollo a la portuguesa con papas"},{"id":"PFPV00039","name":"Milanesa de peceto con papas"},{"id":"PFPV00038","name":"Pastel vegetariano de lentejas y calabaza"},{"id":"PFPV00037","name":"Carre con batatas caramelizadas"},{"id":"PFPV00036","name":"Pechuga grille con pure de papas"},{"id":"PFPV00035","name":"Carne al horno con papas a la crema"},{"id":"PFPV00034","name":"Medallon veggie con pure Mixto"},{"id":"PFPV00033","name":"Plato de empanada de carne x3"},{"id":"PFPV00032","name":"risotto de cebada con hongos"},{"id":"PFPV00031","name":"Lasagna de calabaza"},{"id":"PFPV00030","name":"Bondiola braseada con puré de boniato"},{"id":"PFPV00029","name":"Bowl veggie"},{"id":"PFPV00028","name":"Nuggets de zanahoria con pure mixto"},{"id":"PFPV00027","name":"Milanesa Napolitana con puré de papas"},{"id":"PFPV00026","name":"Solomillo en mostaza y miel con puré de batata"},{"id":"PFPV00025","name":"Chop suey de ternera"},{"id":"PFPV00024","name":"Hamburguesa veggie con hummus parrillada"},{"id":"PFPV00023","name":"Sandwich de corazon de cuadril parrillada"},{"id":"PFPV00022","name":"Sandwich de lomo parrilada"},{"id":"PFPV00021","name":"Chop suey de pollo"},{"id":"PFPV00020","name":"Croquetas de quinoa con vegetales"},{"id":"PFPV00019","name":"Fresh bowl veggie"},{"id":"PFPV00018","name":"Fresh bowl de pollo teriyaki"},{"id":"PFPV00017","name":"Pollo al curry con arroz"},{"id":"PFPV00016","name":"Involtini de zucchini"},{"id":"PFPV00015","name":"Chicken Pie"},{"id":"PFPV00014","name":"falafel de arvejas con humus, babaganush y tabule"},{"id":"PFPV00013","name":"Bondiola braseada con puré de batata"},{"id":"PFPV00012","name":"Canelones de verdura con salsa de tomate"},{"id":"PFPV00011","name":"Bowl Arroz Yamani, Zapallito, hamb. quinoa"},{"id":"PFPV00010","name":"Hot Bowl de ternera"},{"id":"PFPV00009","name":"Pan fresco"},{"id":"PFPV00008","name":"Hot Bowl de Pollo"},{"id":"PFPV00007","name":"Pastel de papas"},{"id":"PFPV00006","name":"Suprema con puré de papa"},{"id":"PFPV00005","name":"Macarroni & cheese"},{"id":"PFPV00004","name":"Pollo crunchi con crema de espinaca y milhojas de papas"},{"id":"PFPV00003","name":"Pollo al curry con papas"},{"id":"PFPV00002","name":"Lasagna vegetariana"},{"id":"PFPV00001","name":"Milanesa de ternera con puré de papa"},{"id":"PFEP00023","name":"Empanada de humita y kale warmer x2"},{"id":"PFEP00016","name":"Empanada de cebolla y queso Warmer x2"},{"id":"PFEP00014","name":"Empanada de carne x3 warmer"},{"id":"PFEP00013","name":"Empanadas de verdura x2 Warmer"},{"id":"PFEP00012","name":"Empanada de queso y cebolla warmer"},{"id":"PFEP00011","name":"Empanada de jamon y queso x2 warmer"},{"id":"PFEP00010","name":"Empanada caprese x2 warmer"},{"id":"PFEP00009","name":"Empanada de carne x2 warmer"},{"id":"PFEP00008","name":"Empanada de carne vending"},{"id":"PFEP00007","name":"Empanada caprese Warmer"},{"id":"PFEP00006","name":"Empanada de carne No Feed con packaging"},{"id":"PFEP00005","name":"Empanada de jamón y queso No Feed con packaging"},{"id":"PFEP00004","name":"Empanada de pollo No Feed con packaging"},{"id":"PFEP00003","name":"Empanada de Verdura Warmer"},{"id":"PFEP00002","name":"Empanada de Carne Warmer"},{"id":"PFEP00001","name":"Empanada de Jamon y Queso Warmer"},{"id":"PFEN00026","name":"Ensalada copetin sin dressing"},{"id":"PFEN00025","name":"Ensalada nuevos aires sin dressing"},{"id":"PFEN00024","name":"Ensalada pasta sin dressing"},{"id":"PFEN00023","name":"Ensalada dulce de tomate sin dressing"},{"id":"PFEN00022","name":"Ensalada peras y queso azul sin dressing"},{"id":"PFEN00021","name":"Ensalada tuna sin dressing"},{"id":"PFEN00020","name":"Ensalada Feednic sin dressing"},{"id":"PFEN00019","name":"Ensalada Mediterranea sin dressing"},{"id":"PFEN00018","name":"Ensalada Fun sin dressing"},{"id":"PFEN00017","name":"Ensalada Caesar sin dressing"},{"id":"PFEN00016","name":"Ensalada Mediterránea"},{"id":"PFEN00015","name":"Ensalada nuevos aires"},{"id":"PFEN00014","name":"Ensalada fresca"},{"id":"PFEN00013","name":"Ensalada feednic"},{"id":"PFEN00012","name":"Ensalada Fun"},{"id":"PFEN00011","name":"Ensalada dulce de tomate con espinaca"},{"id":"PFEN00010","name":"Ensalada Peras y queso azul"},{"id":"PFEN00009","name":"Ensalada Completa"},{"id":"PFEN00008","name":"Ensalada Siciliana"},{"id":"PFEN00007","name":"Ensalada Copetin"},{"id":"PFEN00006","name":"Ensalada dulce de tomate"},{"id":"PFEN00005","name":"Ensalada Tuna"},{"id":"PFEN00004","name":"Ensalada Rainbow"},{"id":"PFEN00003","name":"Ensalada Pasta"},{"id":"PFEN00002","name":"Ensalada Marroqui"},{"id":"PFEN00001","name":"Ensalada Caesar"},{"id":"PFDE00013","name":"Desayuno pan de chocolate"},{"id":"PFDE00012","name":"Desayuno croissant"},{"id":"PFDE00011","name":"Compota de peras"},{"id":"PFDE00010","name":"Pancake adicional"},{"id":"PFDE00009","name":"Bagel tostado adicional"},{"id":"PFDE00008","name":"Huevo duro adicional"},{"id":"PFDE00007","name":"Feta de jamon y queso adicional"},{"id":"PFDE00006","name":"Queso untable adicional"},{"id":"PFDE00005","name":"Desayuno sin harina"},{"id":"PFDE00004","name":"Desayuno Pancakes"},{"id":"PFDE00003","name":"Desayuno healthy"},{"id":"PFDE00002","name":"Desayuno clasico"},{"id":"PFDE00001","name":"Desayuno bagel completo"},{"id":"PFCO00044","name":"Combo ñoquis de boniato"},{"id":"PFCO00043","name":"Combo milanesa con pure"},{"id":"PFCO00039","name":"Combo Ensalada Tuna"},{"id":"PFCO00038","name":"Combo chivito"},{"id":"PFCO00035","name":"Combo ensalada fun"},{"id":"PFCO00034","name":"Combo Ensalada Copetin"},{"id":"PFCO00032","name":"Combo Ensalada Pasta"},{"id":"PFCO00031","name":"Combo Ensalada Caesar"},{"id":"PFCO00029","name":"Combo Aqcua Bowl"},{"id":"PFCO00028","name":"Combo sandwich croque monsieur pan blanco"},{"id":"PFCO00027","name":"Combo sandwich croque monsieur pan negro"},{"id":"PFCO00026","name":"Combo Sandwich suprema de pollo bacon, lechuga y tomate"},{"id":"PFCO00025","name":"Combo Sandwich de miga de pollo, rucula y parmesano"},{"id":"PFCO00024","name":"Combo Spring veggie bowl"},{"id":"PFCO00020","name":"Combo scon caprese"},{"id":"PFCO00019","name":"Combo Pebete jamon y queso"},{"id":"PFCO00018","name":"Combo empanadas de queso y cebolla"},{"id":"PFCO00017","name":"Combo Mc FEED"},{"id":"PFCO00016","name":"Combo Wrap caprese con pollo"},{"id":"PFCO00015","name":"Combo Wrap BBQ"},{"id":"PFCO00014","name":"Combo wrap criollo"},{"id":"PFCO00013","name":"Combo tarta de calabaza y verdura"},{"id":"PFCO00011","name":"Combo tarta de jamón y queso"},{"id":"PFCO00009","name":"Combo Sandwich de milanesa"},{"id":"PFCO00008","name":"Combo sandwich jamon, queso, tomate y huevo"},{"id":"PFCO00007","name":"Combo wrap caesar"},{"id":"PFCO00006","name":"Combo Chicken pesto bowl"},{"id":"PFCO00005","name":"Combo empanadas capresse"},{"id":"PFCO00004","name":"Combo Harvest bowl"},{"id":"PFCO00003","name":"Combo empanadas de carne"},{"id":"PFCO00002","name":"Combo Wrap veggie"},{"id":"PFCO00001","name":"Combo Wrap de carne"},{"id":"NFWP00002","name":"Wrap de peceto"},{"id":"NFSS00036","name":"Croppers mani tostado sin sal"},{"id":"NFSS00035","name":"Croppers mani salado"},{"id":"NFYG00030","name":"Dahi bebible sabor frutilla x200gr"},{"id":"NFYG00027","name":"Dahi yogur batido entero durazno x 170gr"},{"id":"NFYG00026","name":"Dahi yogur batido descremado frutilla x 170gr"},{"id":"NFYG00025","name":"Dahi yogur batido entero vainilla x 170gr"},{"id":"NFYG00024","name":"Dahi yogur batido descremado durazno x 170gr"},{"id":"NFYG00023","name":"Dahi yogur batido descremado vainilla x 170gr"},{"id":"NFYG00022","name":"Dahi yogur batido entero coco x 170gr"},{"id":"NFYG00021","name":"Dahi yogur batido entero frutilla x 170gr"},{"id":"NFYG00020","name":"Coco Iogo yogur frutos rojos sin azucar x 160gr"},{"id":"NFYG00019","name":"Coco Iogo yogur frutilla x 160gr"},{"id":"NFYG00018","name":"Tregar yogur entero con cereales x 164gr"},{"id":"NFYG00017","name":"Milkaut yogur descremado durazno con trozos x 150gr"},{"id":"NFYG00016","name":"Milkaut yogur entero frutilla con cereales x 155gr"},{"id":"NFYG00015","name":"Milkaut yogur entero vainilla con cereales x 155gr"},{"id":"NFYG00014","name":"Dahi Yogur entero bebible con frutos del bosque x 200gr"},{"id":"NFYG00013","name":"Milkaut Yogur descremado Frutilla C/Trozos 150 grs"},{"id":"NFYG00012","name":"Tregar yogur descremado con copos x 164gr"},{"id":"NFYG00011","name":"Milkaut Yogur cremoso entero frutilla x 190gr"},{"id":"NFYG00010","name":"Milkaut Yogur cremoso entero vainilla x 190gr"},{"id":"NFYG00009","name":"Dahi Yogur entero bebible sabor durazno x 200gr"},{"id":"NFYG00008","name":"Dahi Yogur entero bebible sabor vainilla x 200gr"},{"id":"NFYG00007","name":"Dahi Yogur descremado bebible con frutas del bosque x 200gr"},{"id":"NFYG00006","name":"Dahi Yogur descremado bebible sabor vainilla x 200gr"},{"id":"NFYG00005","name":"Dahi Yogur descremado bebible sabor banana x 200gr"},{"id":"NFYG00004","name":"Milkaut Yogur Plus Entera Frutilla C/Trozos 150 grs"},{"id":"NFYG00003","name":"Milkaut Yogur Plus Entera Durazno C/Trozos 150 grs"},{"id":"NFYG00002","name":"Milkaut Yogur descremado de vainilla x 190gr"},{"id":"NFYG00001","name":"Milkaut Yogur descremado de frutilla x 190gr"},{"id":"NFWP00004","name":"Grandwich wrap caesar vending"},{"id":"NFWP00003","name":"Grandwich wrap de pollo a la crema vending"},{"id":"NFWP00001","name":"Wrap veggie proveedor vending"},{"id":"NFTA00004","name":"Tarta de jamon y queso proveedor vending"},{"id":"NFTA00003","name":"Tarta de pollo proveedor vending"},{"id":"NFTA00002","name":"Tarta de verduras proveedor vending"},{"id":"NFTA00001","name":"Tarta de calabaza y verdura proveedor vending"},{"id":"NFSS00047","name":"Granix galletitas de salvado x 27gr"},{"id":"NFSS00046","name":"Natural candy bites caju x 30gr"},{"id":"NFSS00041","name":"Grandwich sandwich de pan negro, jamon, queso, tomate y huevo"},{"id":"NFSS00040","name":"Granix sesamo sin sal x 175g"},{"id":"NFSS00039","name":"Granix snacks barbacoa x 45g"},{"id":"NFSS00038","name":"Boutique chips cheddar"},{"id":"NFSS00037","name":"Quento batatas"},{"id":"NFSS00034","name":"Quento papas cheddar"},{"id":"NFSS00033","name":"Quento papas ketchup"},{"id":"NFSS00032","name":"Quento papas clasicas"},{"id":"NFSS00031","name":"Quento nachos"},{"id":"NFSS00030","name":"Quento papas jamon serrano"},{"id":"NFSS00029","name":"Quento papas cebolla y crema"},{"id":"NFSS00028","name":"Grandwich sandwich de pollo crunchi"},{"id":"NFSS00027","name":"Burrito de yamani, pollo y cherry"},{"id":"NFSS00026","name":"Burrito de quinoa, calabaza y queso azul"},{"id":"NFSS00025","name":"Alwa chips de papa"},{"id":"NFSS00024","name":"Alwa chips de batata"},{"id":"NFSS00023","name":"Individuales croissant"},{"id":"NFSS00022","name":"Individuales sandwich de miga"},{"id":"NFSS00021","name":"Pringles de queso x 40gr"},{"id":"NFSS00020","name":"Pringles originales x 37gr"},{"id":"NFSS00019","name":"Pringles de queso y cebolla x 40gr"},{"id":"NFSS00018","name":"Boutique chips jalapeño"},{"id":"NFSS00017","name":"Grandwich croissant jamon y queso"},{"id":"NFSS00016","name":"Boutique chips honey mostard"},{"id":"NFSS00015","name":"Boutique chips italian"},{"id":"NFSS00014","name":"Boutique chips natural sea salt"},{"id":"NFSS00013","name":"Grandwich sandwich de milanesa"},{"id":"NFSS00012","name":"Grandwich triple de miga de jamon y queso x2"},{"id":"NFSS00011","name":"Grandwich pebete de jamon crudo y queso"},{"id":"NFSS00010","name":"Grandwich pebete de jamon y queso"},{"id":"NFSS00009","name":"Grandwich figazzita de salame y queso"},{"id":"NFSS00008","name":"Cañon sandwich de jamon y queso"},{"id":"NFSS00007","name":"Shiva snack de semillas"},{"id":"NFSS00006","name":"Lyv chips sal marina"},{"id":"NFSS00005","name":"Bamboo Pochoclos con Azúcar Orgánica x 40gr"},{"id":"NFSS00004","name":"Bamboo Pochoclos con Sal marina x 30gr"},{"id":"NFSS00003","name":"Hausbrot Grisines con sésamos y queso"},{"id":"NFSS00002","name":"Lyv Chips de Papa"},{"id":"NFSS00001","name":"Lyv Chips de Batata"},{"id":"NFSD00092","name":"Alfajor simple cordoba"},{"id":"NFSD00091","name":"Mogul gomitas"},{"id":"NFSD00090","name":"Alfajor triple cordoba"},{"id":"NFSD00086","name":"Zafran barrita manzana y chia"},{"id":"NFSD00085","name":"Zafran barrita algarroba y nuez"},{"id":"NFSD00083","name":"Granix frutigran chips de chocolate x 39g"},{"id":"NFSD00078","name":"Granix frutigran avena y pasas x 39g"},{"id":"NFSD00077","name":"Franui pink"},{"id":"NFSD00076","name":"Zafran Barrita Arándanos y almendras"},{"id":"NFSD00075","name":"Zafran Barrita Cajú y semillas de zapallo"},{"id":"NFSD00073","name":"La aldea alfajor gula blanco"},{"id":"NFSD00072","name":"La aldea alfajor gula negro"},{"id":"NFSD00070","name":"Nutri raw cookies de almendra"},{"id":"NFSD00069","name":"Crudda barrita Brownie"},{"id":"NFSD00068","name":"Franui chocolate amargo"},{"id":"NFSD00067","name":"Franui chocolate con leche"},{"id":"NFSD00066","name":"Raw barritas coco"},{"id":"NFSD00063","name":"Bridge galletitas x 140gr"},{"id":"NFSD00062","name":"Pasticcino alfajor de chocolate negro"},{"id":"NFSD00061","name":"Happy Food galleta de limon"},{"id":"NFSD00060","name":"Happy Food chalita clasica"},{"id":"NFSD00059","name":"Happy Food alfajor sin azucar"},{"id":"NFSD00058","name":"Happy Food bocadito sin azucar"},{"id":"NFSD00056","name":"Franks alfajor mousse de limon"},{"id":"NFSD00055","name":"La Bustinera alfajor de chocolate"},{"id":"NFSD00054","name":"Pasticcino sans galletitas avena y chips x 120gr"},{"id":"NFSD00053","name":"Pasticcino sans galletitas limon y jengibre x 120gr"},{"id":"NFSD00052","name":"Rakan pochoclo frutilla x 50gr"},{"id":"NFSD00051","name":"Rakan pochoclo caramel x 50gr"},{"id":"NFSD00050","name":"La aldea bomba de chocolate negro"},{"id":"NFSD00049","name":"La aldea bomba de chocolate blanco"},{"id":"NFSD00048","name":"La aldea alfajor de maicena"},{"id":"NFSD00047","name":"Mini Toddy"},{"id":"NFSD00046","name":"Le Banana bites chocolate semiamargo x 150gr"},{"id":"NFSD00045","name":"Johnnys barritas de chocolate"},{"id":"NFSD00044","name":"Le Banana bites chocolate con leche x 150gr"},{"id":"NFSD00043","name":"Le Banana bites chocolate semiamargo x 30gr"},{"id":"NFSD00042","name":"Le Banana bites chocolate con leche x 30gr"},{"id":"NFSD00035","name":"La aldea alfajor de chocolate blanco"},{"id":"NFSD00034","name":"La aldea alfajor de chocolate negro"},{"id":"NFSD00033","name":"Mini Oreo x 50gr"},{"id":"NFSD00032","name":"Muecas alfajor de chocolate"},{"id":"NFSD00030","name":"Muecas alfajor de cacao, ddl de coco y mantequilla de mani"},{"id":"NFSD00028","name":"Pasticcino cuadrado de limon"},{"id":"NFSD00027","name":"Pasticcino cookies de chocolate"},{"id":"NFSD00026","name":"Pasticcino cookies de vainilla"},{"id":"NFSD00025","name":"Freddo tableta pistacho"},{"id":"NFSD00024","name":"Freddo tableta"},{"id":"NFSD00023","name":"Freddo vasito"},{"id":"NFSD00022","name":"Freddo estuche bombon"},{"id":"NFSD00021","name":"Natural Candy chocolate granola clusters (violeta)"},{"id":"NFSD00020","name":"Natural Candy coconut granola clusters (naranja)"},{"id":"NFSD00019","name":"Belgian waffles"},{"id":"NFSD00015","name":"Muecas barritas de manzana y arandanos"},{"id":"NFSD00014","name":"Muecas barritas de banana y dulce de leche"},{"id":"NFSD00013","name":"Muecas barritas de pasas y almendras"},{"id":"NFSD00012","name":"Muecas barritas de arandanos y pasas sin azucar"},{"id":"NFSD00011","name":"Muecas barritas de cacao avellanas y coco"},{"id":"NFSD00010","name":"Cachafaz alfajor chocolate blanco"},{"id":"NFSD00009","name":"Huertas del pilar bocado de frutas"},{"id":"NFSD00007","name":"Natural candy almendras bañadas en chocolate negro"},{"id":"NFSD00006","name":"Cachafaz alfajor chocolate negro"},{"id":"NFSD00005","name":"WIK barritas de quinoa"},{"id":"NFSD00004","name":"Natural candy almendras bañadas en chocolate blanco (ABB)"},{"id":"NFSD00003","name":"Nutri Raw alfajor chocolate con mani"},{"id":"NFSD00002","name":"Natural Candy Almendras y semillas bañadas en chocolate negro (crudo)"},{"id":"NFSD00001","name":"Natural Candy Almendras y semillas bañadas en chocolate blanco (crema)"},{"id":"NFBB00055","name":"POWERADE ION4 GOLD RUSH 500cc"},{"id":"NFBB00054","name":"POWERADE ION4 NARANJA 500cc"},{"id":"NFBB00053","name":"POWERADE ION4 UVA 500cc"},{"id":"NFBB00052","name":"POWERADE ION4 FRUTAS TROPICALES 500cc"},{"id":"NFBB00051","name":"POWERADE ION4 MANZANA 500cc"},{"id":"NFBB00050","name":"POWERADE ION4 MOUNTAIN BLAST 500cc"},{"id":"NFBB00047","name":"Milkaut chocolatada x 200 cc"},{"id":"NFBB00045","name":"Juice Orange x 330cc"},{"id":"NFBB00044","name":"Coca cola comun x 310 cc"},{"id":"NFBB00043","name":"Sprite comun x 310 cc"},{"id":"NFBB00042","name":"Coca cola zero x 310 cc"},{"id":"NFBB00041","name":"Fanta comun x 310 cc"},{"id":"NFBB00040","name":"Mirinda comun lata x 354 cc"},{"id":"NFBB00039","name":"Schweppes ginger ale x 310 cc"},{"id":"NFBB00037","name":"Gatorade naranja x 500cc"},{"id":"NFBB00036","name":"Gatorade manzana x 500cc"},{"id":"NFBB00035","name":"KO agua x 500 cc"},{"id":"NFBB00033","name":"Schweppes Tonica lata x 310 cc"},{"id":"NFBB00032","name":"Monster energy comun NV"},{"id":"NFBB00031","name":"Citric jugo de naranja x 500cc"},{"id":"NFBB00030","name":"Citric Jugo de manzana x 250cc"},{"id":"NFBB00029","name":"Paso de los Toros tonica lata x 269 cc"},{"id":"NFBB00028","name":"Paso de los Toros pomelo lata x 269 cc"},{"id":"NFBB00027","name":"Juice pomelo x 330cc"},{"id":"NFBB00026","name":"7UP free x 354 cc"},{"id":"NFBB00025","name":"Paso de los Toros tonica sin azucar lata x 354 cc"},{"id":"NFBB00024","name":"Paso de los Toros pomelo lata x 354 cc"},{"id":"NFBB00023","name":"Juice Limonada Resaca Killer x 330cc"},{"id":"NFBB00022","name":"Juice Pink x 330cc"},{"id":"NFBB00021","name":"7UP común lata x 354 cc"},{"id":"NFBB00020","name":"Pepsi común lata x 354 cc"},{"id":"NFBB00019","name":"Pepsi black lata x 354 cc"},{"id":"NFBB00018","name":"Monster Mango Loco"},{"id":"NFBB00017","name":"Monster Ultra Paradise"},{"id":"NFBB00016","name":"Benedictino agua x 500 cc"},{"id":"NFBB00015","name":"Schweppes pomelo lata x 310 cc"},{"id":"NFBB00014","name":"Cepita Multifruta x 200cc"},{"id":"NFBB00013","name":"Fanta sin azucar"},{"id":"NFBB00012","name":"Cepita de naranja x 200cc"},{"id":"NFBB00011","name":"Citric Jugo de durazno y naranja x 250cc"},{"id":"NFBB00010","name":"Citric Jugo de Naranja x 250cc"},{"id":"NFBB00009","name":"Cepita Jugo de manzana roja x 200cc"},{"id":"NFBB00008","name":"Monster Zero Ultra"},{"id":"NFBB00007","name":"Monster Ultra Watermelon"},{"id":"NFBB00006","name":"Monster Ultra Sunrise"},{"id":"NFBB00005","name":"Sprite zero lata x 354 cc"},{"id":"NFBB00004","name":"Sprite común lata x 354 cc"},{"id":"NFBB00003","name":"Fanta naranja lata x 354 cc"},{"id":"NFBB00002","name":"Coca Cola zero lata x 354 cc"},{"id":"NFBB00001","name":"Coca Cola común lata x 354 cc"}];
+
+// ═══════════════════ STATE ═══════════════════
+let currentCardId = '';
+let cart = {}; // { productId: qty }
+let scanTimestamp = '';
+
+// ═══════════════════ CONFIG ═══════════════════
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwNfOyVcjtERG4xg7tGX4DSaKInMXQ2tePJn49uxVGLcF1WlexrWMR4HC6Fpn3m7t31/exec';
+
+// ═══════════════════ RFID (Keyboard Wedge) ═══════════════════
+// El lector OMNIKEY 5427CK actúa como teclado: tipea el ID y presiona Enter.
+// Solo necesitamos mantener el foco en el input y escuchar el Enter.
+function initRFID() {
+  const input = document.getElementById('manualId');
+  // Mantener foco en el campo cuando la pantalla de scan está activa
+  function keepFocus() {
+    if (document.getElementById('scanScreen').classList.contains('active')) {
+      input.focus();
+    }
+  }
+  document.addEventListener('click', keepFocus);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) keepFocus(); });
+  // Auto-submit cuando el lector manda Enter (típico en modo Wedge)
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const val = input.value.trim();
+      if (val) {
+        document.getElementById('rfidDot').className = 'rfid-dot read';
+        document.getElementById('rfidStatusText').textContent = 'Tarjeta leída: ' + val;
+        setTimeout(() => enterManual(), 150); // pequeño delay visual
+      }
+    }
+  });
+  // Detectar cuando el lector está escribiendo (input rápido = lector, no humano)
+  let lastInputTime = 0;
+  let rfidBuffer = '';
+  let rfidTimer = null;
+  input.addEventListener('input', () => {
+    const now = Date.now();
+    if (now - lastInputTime < 80) {
+      // Input muy rápido → probablemente es el lector RFID
+      clearTimeout(rfidTimer);
+      rfidBuffer = input.value;
+      rfidTimer = setTimeout(() => {
+        if (rfidBuffer.trim()) {
+          document.getElementById('rfidDot').className = 'rfid-dot read';
+          document.getElementById('rfidStatusText').textContent = 'Tarjeta leída: ' + rfidBuffer.trim();
+          enterManual();
+        }
+      }, 120);
+    }
+    lastInputTime = now;
+  });
+  keepFocus();
+}
+
+// ═══════════════════ MANUAL ═══════════════════
 function enterManual() {
   const val = document.getElementById('manualId').value.trim();
   if (!val) { showToast('Ingresá un código de tarjeta'); return; }
   openProducts(val);
 }
 
-// Función para verificar la compra y abrir productos
-function openProducts(cardId) {
+// QR/cámara eliminado — solo RFID y manual
+
+// ═══════════════════ PRODUCTS ═══════════════════
+function getEmoji(name) {
+  const n = name.toLowerCase();
+  if (n.includes('wrap') || n.includes('burrito')) return '🌯';
+  if (n.includes('pizza')) return '🍕';
+  if (n.includes('empanada')) return '🥟';
+  if (n.includes('ensalada')) return '🥗';
+  if (n.includes('bowl')) return '🥣';
+  if (n.includes('milanesa') || n.includes('suprema') || n.includes('pollo')) return '🍗';
+  if (n.includes('sandwich') || n.includes('sándwich')) return '🥪';
+  if (n.includes('tarta')) return '🥧';
+  if (n.includes('desayuno') || n.includes('bagel') || n.includes('pancake')) return '🍳';
+  if (n.includes('agua') || n.includes('jugo') || n.includes('coca') || n.includes('sprite') || n.includes('monster') || n.includes('gatorade') || n.includes('powerade')) return '🥤';
+  if (n.includes('alfajor') || n.includes('brownie') || n.includes('cookie') || n.includes('donut') || n.includes('torta')) return '🍫';
+  if (n.includes('yogur') || n.includes('dahi')) return '🫙';
+  if (n.includes('combo')) return '🍱';
+  if (n.includes('pastel') || n.includes('pure') || n.includes('pasta') || n.includes('fideos') || n.includes('raviole')) return '🍝';
+  if (n.includes('carne') || n.includes('bondiola') || n.includes('bife') || n.includes('lomo')) return '🥩';
+  return '🍽️';
+}
+
+async function openProducts(cardId) {
   currentCardId = cardId;
   scanTimestamp = new Date().toISOString().replace('T', ' ').slice(0, 19);
   cart = {};
 
   // Verificar si ya compró hoy
   showLoading(true, 'Verificando tarjeta...');
-  const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-  const url = `${SCRIPT_URL}?action=check&id_tarjeta=${encodeURIComponent(cardId)}&fecha=${today}`;
-  fetch(url)
-    .then(resp => resp.json())
-    .then(data => {
-      showLoading(false);
-      if (data.yaCompro) {
-        showBlockedScreen(cardId, data.compras || []);
-        return;
-      }
-      document.getElementById('displayCardId').textContent = 'ID: ' + cardId;
-      document.getElementById('cartCardId').textContent = 'ID: ' + cardId;
-      renderProducts(PRODUCTS);
-      showScreen('productsScreen');
-    })
-    .catch(e => {
-      showLoading(false);
-      showToast('No se pudo verificar historial. Continuando...');
-    });
+  try {
+    const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+    const url = `${SCRIPT_URL}?action=check&id_tarjeta=${encodeURIComponent(cardId)}&fecha=${today}`;
+    const resp = await fetch(url);
+    const data = await resp.json();
+    showLoading(false);
+    if (data.yaCompro) {
+      showBlockedScreen(cardId, data.compras || []);
+      return;
+    }
+  } catch(e) {
+    showLoading(false);
+    // Si falla la consulta, dejamos pasar con aviso
+    showToast('No se pudo verificar historial. Continuando...');
+  }
+
+  document.getElementById('displayCardId').textContent = 'ID: ' + cardId;
+  document.getElementById('cartCardId').textContent = 'ID: ' + cardId;
+  renderProducts(PRODUCTS);
+  document.getElementById('searchInput').value = '';
+  showScreen('productsScreen');
 }
 
+function showBlockedScreen(cardId, compras) {
+  const el = document.getElementById('blockedCardId');
+  if (el) el.textContent = cardId;
+  const list = document.getElementById('blockedPurchaseList');
+  if (list) {
+    if (compras.length > 0) {
+      list.innerHTML = compras.map(c =>
+        `<div class="success-item"><span class="sname">${c.nombre_producto}</span><span class="sqty">×${c.cantidad}</span></div>`
+      ).join('');
+    } else {
+      list.innerHTML = '<div style="padding:12px 16px;color:var(--muted);font-size:0.82rem">No se pudo recuperar el detalle.</div>';
+    }
+  }
+  showScreen('blockedScreen');
+}
+
+function renderProducts(list) {
+  const container = document.getElementById('productsList');
+  container.innerHTML = '';
+  list.forEach(p => {
+    const qty = cart[p.id] || 0;
+    const inCart = qty > 0;
+    const div = document.createElement('div');
+    div.className = 'product-item' + (inCart ? ' in-cart' : '');
+    div.id = 'prod-' + CSS.escape(String(p.id));
+    div.innerHTML = `
+      <div class="product-icon">${getEmoji(p.name)}</div>
+      <div class="product-info">
+        <div class="pid">${p.id}</div>
+        <div class="pname">${p.name}</div>
+      </div>
+      ${inCart ? `
+      <div class="product-qty">
+        <button class="qty-btn" onclick="changeQty('${String(p.id).replace(/'/g,"\\'")}',event,-1)">−</button>
+        <span class="qty-val">${qty}</span>
+        <button class="qty-btn" onclick="changeQty('${String(p.id).replace(/'/g,"\\'")}',event,1)">+</button>
+      </div>` : `
+      <button class="btn btn-secondary btn-sm" onclick="addToCart('${String(p.id).replace(/'/g,"\\'")}',event)">+ Agregar</button>`}
+      <div class="check-mark">✓</div>
+    `;
+    container.appendChild(div);
+  });
+  updateCartUI();
+}
+
+function addToCart(productId, e) {
+  if (e) e.stopPropagation();
+  cart[productId] = 1;
+  const list = document.getElementById('searchInput').value
+    ? PRODUCTS.filter(p => matchSearch(p, document.getElementById('searchInput').value))
+    : PRODUCTS;
+  renderProducts(list);
+  updateCartUI();
+}
+
+function changeQty(productId, e, delta) {
+  if (e) e.stopPropagation();
+  const newQty = (cart[productId] || 0) + delta;
+  if (newQty <= 0) {
+    delete cart[productId];
+  } else {
+    cart[productId] = newQty;
+  }
+  const list = document.getElementById('searchInput').value
+    ? PRODUCTS.filter(p => matchSearch(p, document.getElementById('searchInput').value))
+    : PRODUCTS;
+  renderProducts(list);
+  updateCartUI();
+}
+
+function matchSearch(p, q) {
+  const lq = q.toLowerCase();
+  return String(p.id).toLowerCase().includes(lq) || p.name.toLowerCase().includes(lq);
+}
+
+function filterProducts() {
+  const q = document.getElementById('searchInput').value;
+  const list = q ? PRODUCTS.filter(p => matchSearch(p, q)) : PRODUCTS;
+  renderProducts(list);
+}
+
+function updateCartUI() {
+  const count = Object.values(cart).reduce((a, b) => a + b, 0);
+  document.getElementById('cartCount').textContent = count;
+  document.getElementById('floatCount').textContent = Object.keys(cart).length;
+  const btn = document.getElementById('confirmFloatBtn');
+  btn.style.display = count > 0 ? 'flex' : 'none';
+}
+
+// ═══════════════════ CART ═══════════════════
+function goToCart() {
+  if (Object.keys(cart).length === 0) { showToast('Agregá al menos un producto'); return; }
+  renderCart();
+  showScreen('cartScreen');
+}
+
+function renderCart() {
+  const container = document.getElementById('cartList');
+  const items = Object.entries(cart);
+  if (items.length === 0) {
+    container.innerHTML = '<div class="empty-cart"><div class="emoji">🛒</div><p>El carrito está vacío</p></div>';
+    return;
+  }
+  container.innerHTML = '';
+  items.forEach(([pid, qty]) => {
+    const prod = PRODUCTS.find(p => String(p.id) === String(pid)) || { id: pid, name: pid };
+    const div = document.createElement('div');
+    div.className = 'cart-item';
+    div.innerHTML = `
+      <div class="product-icon" style="flex-shrink:0">${getEmoji(prod.name)}</div>
+      <div class="cart-item-info">
+        <div class="cid">${prod.id}</div>
+        <div class="cname">${prod.name}</div>
+        <div class="cart-item-qty">
+          <button class="qty-btn" onclick="cartChangeQty('${String(pid).replace(/'/g,"\\'")}', -1)">−</button>
+          <span class="qty-val">${qty}</span>
+          <button class="qty-btn" onclick="cartChangeQty('${String(pid).replace(/'/g,"\\'")}', 1)">+</button>
+        </div>
+      </div>
+      <span class="cart-remove" onclick="removeFromCart('${String(pid).replace(/'/g,"\\'")}')">🗑</span>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function cartChangeQty(pid, delta) {
+  const newQty = (cart[pid] || 0) + delta;
+  if (newQty <= 0) { delete cart[pid]; }
+  else { cart[pid] = newQty; }
+  renderCart();
+  updateCartUI();
+  if (Object.keys(cart).length === 0) goToProducts();
+}
+function removeFromCart(pid) {
+  delete cart[pid];
+  renderCart();
+  updateCartUI();
+  if (Object.keys(cart).length === 0) goToProducts();
+}
+function goToProducts() {
+  showScreen('productsScreen');
+  const list = document.getElementById('searchInput').value
+    ? PRODUCTS.filter(p => matchSearch(p, document.getElementById('searchInput').value))
+    : PRODUCTS;
+  renderProducts(list);
+}
+
+// ═══════════════════ SUBMIT ═══════════════════
+async function submitOrder() {
+  showLoading(true);
+
+  const rows = Object.entries(cart).map(([pid, qty]) => {
+    const prod = PRODUCTS.find(p => String(p.id) === String(pid)) || { id: pid, name: pid };
+    return {
+      id_tarjeta: currentCardId,
+      id_producto: prod.id,
+      nombre_producto: prod.name,
+      cantidad: qty,
+      fecha_hora: scanTimestamp
+    };
+  });
+
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'insert', rows })
+    });
+    showLoading(false);
+    showSuccess(rows);
+  } catch(e) {
+    showLoading(false);
+    showToast('Error al guardar: ' + e.message);
+  }
+}
+
+function showSuccess(rows) {
+  const sub = document.getElementById('successSub');
+  sub.textContent = `${rows.length} producto(s) registrado(s) para tarjeta ${currentCardId} — ${scanTimestamp}`;
+  
+  const items = document.getElementById('successItems');
+  items.innerHTML = rows.map(r => `
+    <div class="success-item">
+      <span class="sname">${r.nombre_producto}</span>
+      <span class="sqty">×${r.cantidad}</span>
+    </div>
+  `).join('');
+  
+  showScreen('successScreen');
+}
+
+function resetAll() {
+  currentCardId = '';
+  cart = {};
+  scanTimestamp = '';
+  document.getElementById('manualId').value = '';
+  document.getElementById('rfidDot').className = 'rfid-dot';
+  document.getElementById('rfidStatusText').textContent = 'Esperando tarjeta...';
+  showScreen('scanScreen');
+  setTimeout(() => document.getElementById('manualId').focus(), 100);
+}
+
+// ═══════════════════ UTILS ═══════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+function goBack() { showScreen('scanScreen'); }
 function showLoading(show, text = 'Guardando en Google Sheets...') {
   document.getElementById('loadingText').textContent = text;
   document.getElementById('loadingOverlay').classList.toggle('show', show);
 }
-
 function showToast(msg, success = false) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -318,12 +725,14 @@ function showToast(msg, success = false) {
   setTimeout(() => t.className = 'toast' + (success ? ' success' : ''), 3000);
 }
 
-// Función para mostrar las pantallas
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
+// Iniciar lector RFID (Keyboard Wedge)
+initRFID();
 </script>
 
+<!-- Versión -->
+<footer style="position: fixed; bottom: 10px; left: 0; right: 0; text-align: center; font-size: 0.8rem; color: var(--muted);">
+  <p>Versión: 1.2026</p>
+</footer>
+  
 </body>
 </html>
