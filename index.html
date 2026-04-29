@@ -645,26 +645,30 @@ function initRFID() {
       }
     }
   });
-  // Detectar cuando el lector está escribiendo (input rápido = lector, no humano)
+  // Detectar si el input viene del lector (rápido) o del humano (lento)
   let lastInputTime = 0;
-  let rfidBuffer = '';
-  let rfidTimer = null;
+  let isScanner = false;
   input.addEventListener('input', () => {
     const now = Date.now();
-    if (now - lastInputTime < 80) {
-      // Input muy rápido → probablemente es el lector RFID
-      clearTimeout(rfidTimer);
-      rfidBuffer = input.value;
-      rfidTimer = setTimeout(() => {
-        if (rfidBuffer.trim()) {
-          document.getElementById('rfidDot').className = 'rfid-dot read';
-          document.getElementById('rfidStatusText').textContent = 'Tarjeta leída: ' + rfidBuffer.trim();
-          enterManual();
-        }
-      }, 120);
-    }
+    isScanner = (now - lastInputTime) < 80;
     lastInputTime = now;
   });
+
+  // Enter: auto-submit si es lector, manual si es humano (ambos requieren Enter)
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const val = input.value.trim();
+      if (!val) return;
+      if (isScanner) {
+        document.getElementById('rfidDot').className = 'rfid-dot read';
+        document.getElementById('rfidStatusText').textContent = 'Tarjeta leída: ' + val;
+      }
+      enterManual();
+      isScanner = false;
+    }
+  });
+
   keepFocus();
 }
  
